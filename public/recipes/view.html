@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="view-recipe-wrapper">
+        <div id="recipe-container" class="recipe-view-box">
+            <h2 id="recipe-title">Loading...</h2>
+            <div id="image-gallery"></div>
+            <p id="recipe-meta"></p>
+            <img id="recipe-img" style="max-width: 100%; border-radius:  10px; display: none;">
+
+            <h3>Description</h3>
+            <p id="recipe-description"></p>
+
+            <h3>Ingredients</h3>
+            <ul id="recipe-ingredients"></ul>
+
+            <h3>Instructions</h3>
+            <ol id="recipe-instructions"></ol>
+
+            <p id="date" style="margin-top: 15px; color:#666;"></p>
+
+            <br>
+            <a href="/recipes/recipes.html" class="back-btn">Back to recipes</a>
+        </div>
+    </div>
+
+    <script>
+        async function loadRecipe() {
+            const params = new URLSearchParams(window.location.search);
+            const id = params.get("id");
+
+            if (!id) {
+                document.getElementById("recipe-title"). innerText = "Recipe not found. ";
+                return;
+            }
+
+            const response = await fetch(`/api/recipes/${id}`, {
+                credentials: "include"
+            });
+
+            if (!response.ok) {
+                document.getElementById("recipe-title").innerText = "Recipe not found.";
+                return;
+            }
+
+            const r = await response.json();
+
+            document.getElementById("recipe-title").innerText = r.title;
+
+            document.getElementById("recipe-meta").innerText = 
+                `by ${r.author} • ${new Date(r.created_at).toLocaleString()}`;
+
+            let imgs =[];
+
+            if(r.images) {
+                try {
+                    if(Array.isArray(r.images)) {
+                        imgs =r.images;
+                    } else if (typeof r.images === "string") {
+                        let str = r.images.trim();
+                        if (!str.startsWith("[")) str = "[" + str;
+                        if (!str.endsWith("]")) str = str + "]";
+                        str = str.replace(/'/g, '"');
+
+                        imgs = JSON.parse(str);
+                    }
+                }catch (err) {
+                    console.error("Failed to parse images:", err, "Raw data:", r.images);
+                    imgs = [];
+                }
+            }
+
+            const gallery = document.getElementById("image-gallery");
+            imgs.forEach(name => {
+                const img = document.createElement("img");
+                img.src = `/uploads/${name}`;
+                img.alt = `Image of ${r.title}`;
+                img.className = "gallery-image";
+                gallery.appendChild(img);
+            });
+
+            document.getElementById("recipe-description").innerText = r.description || "";
+            document.getElementById("recipe-ingredients").innerHTML =
+             (r.ingredients || "")
+                 .split("\n")
+                 .map(i => `<li>${i}</li>`)
+                 .join("");
+            document.getElementById("recipe-instructions").innerHTML =
+                (r.instructions || "")
+                    .split("\n")
+                    .map(i => `<li>${i}</li>`)
+                    .join("");
+        }
+
+        loadRecipe();
+    </script>
+    
+</body>
+</html>

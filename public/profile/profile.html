@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+    <div class="profile-container">
+        <h2>Your profile</h2>
+
+        <div id="profile-info">Loading...</div>
+        <br><br>
+
+        <button id="delete-btn" class="danger">Delete My Account</button>
+    </div>
+
+    <script>
+
+        fetch('/api/profile')
+          .then(res => res.json())
+          .then(data => {
+            document.getElementById("profile-info").innerHTML = `
+                <p><strong>Name:</strong> ${data.user.name}</p>
+                <p><strong>Email:</strong> ${data.user.email}</p>
+            `;
+          });
+
+          document.getElementById("delete-btn").onclick = () => {
+            if (confirm("are you sure? This cannot be undone.")) {
+                fetch('/api/auth/delete', {
+                    method: "DELETE"
+                })
+                .then(res => res.json())
+                .then(data => {
+                    alert("your account has been deleted.");
+                    window.location.href = "/signin/signin.html";
+                })
+            }
+          }
+    </script>
+    
+</body>
+</html>

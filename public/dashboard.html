@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dahboard</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="dashboard-header">
+        <div class="dashboard-buttons">
+            <a id="nav-add" href="/add_recipe/add_recipe.html">Add Recipe</a>
+            <a id="nav-all" href="/recipes/recipes.html">All Recipes</a>
+            <a id="nav-logout" href="/api/auth/logout">Logout</a>
+            <button id="delete-btn" class="danger">Delete Account</button>
+        </div>
+    </div>
+    <div class="dashboard-container">
+        <h1>Welcome to Kitchen Chronicles</h1>
+        <h3>A place where every recipe tells a story</h3>
+    </div>
+    <div class="dashboard-body">
+
+        <h2>Craft Your Culinary Masterpiece</h2>
+        <h3>Where Your Recipes Come to Life</h3>
+
+    </div>
+
+    <script>
+        const logoutBtn = document.getElementById('nav-logout');
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', async (e) => {
+                e.preventDefault();
+                try {
+                    const response = await fetch('/api/auth/logout', {method: 'POST', credentials: 'include'});
+                    if (!response.ok) throw new Error('Logout failed');
+                    location.href = '/sign_in/signin.html';
+                } catch (err) {
+                    console.error(err);
+                    alert('Error logging out. Try again')
+                }
+            });
+        }
+
+        window.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const response = await fetch('/api/profile', { credentials: 'include'});
+                if (!response.ok) throw new Error('Not authenticated');
+            } catch {
+                location.href = '/sign_in/signin.html'
+            }
+        });
+        document.getElementById("delete-btn").onclick = () => {
+            if (confirm("are you sure? This cannot be undone.")) {
+                fetch('/api/auth/delete', {
+                    method: "DELETE"
+                })
+                .then(res => res.json())
+                .then(data => {
+                    alert("your account has been deleted.");
+                    window.location.href = "/signin/signin.html";
+                })
+            }
+          }
+    </script>
+    
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipes</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+        <div id="recipes-page">
+            <h2>Recipes</h2>
+            <div id="recipes-list"></div>
+        </div>
+    <script>
+        async function load () {
+            const response = await fetch('/api/recipes/recipes');
+            const rows = await response.json();
+            const list = document.getElementById('recipes-list');
+
+            list.innerHTML = rows.map(r => {
+                const arr = (() => {
+                    try {
+                        if (Array.isArray(r.images)) return r.images;
+                        return JSON.parse(r.images.replace(/'/g, '"'));
+                    } catch { 
+                        return []; 
+                    }
+                })();
+
+                const imgTag = arr.length > 0
+                    ? `<img src="/uploads/${arr[0]}" alt="Thumbnail of ${r.title}" class="recipe-image">`
+                    : "";
+
+                return `
+                    <div class="recipe-card" style="border: 1px solid #ccc; padding: 10px; margin: 10px;">
+                        <h3>${r.title}</h3>
+                        <p>by ${r.author} • ${new Date(r.created_at).toLocaleString()}</p>
+                        ${imgTag}
+                        <p>${r.description || ''}</p>
+                        <a href="/recipes/view.html?id=${r.id}">view recipe</a>
+                    </div>
+                `;
+                }).join('');
+        }
+        load();
+    </script>
+    
+</body>
+</html>

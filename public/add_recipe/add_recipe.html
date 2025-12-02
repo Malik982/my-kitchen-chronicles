@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add recipe</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="add-recipe-wrapper">
+        <h2>Add recipe</h2>
+        <form id="recipe-form" enctype="multipart/form-data">
+            <input name="title" id="title" placeholder="Title" required><br>
+            <textarea name="description" id="description" placeholder="Short description"></textarea><br>
+            <textarea name="ingredients" id="ingredients" placeholder="Ingredients (one per line)" required></textarea><br>
+            <textarea name="instructions" id="instructions" placeholder="Instructions (one per line)" required></textarea><br>
+            <input type="file" name="images" id="images" accept="images/*" multiple><br>
+            <button type="submit">Submit</button>
+        </form>
+        <p id="message"></p>
+    </div>
+    <script>
+        document.getElementById('recipe-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const form = document.getElementById('recipe-form');
+            const formData = new FormData(form);
+            const response = await fetch('/api/recipes/add_recipe', {
+                method: 'POST',
+                body: formData,
+                credentials: "include"
+            });
+            const data = await response.json();
+            
+            if (data.success) {
+                document.getElementById('message').textContent = data.message;
+                setTimeout(()=> location.href = '/recipes/recipes.html', 800);
+            }
+            else {
+                document.getElementById('message').textContent = data.message || 'An error occurred';
+            }
+        })
+    </script>
+</body>
+</html>
