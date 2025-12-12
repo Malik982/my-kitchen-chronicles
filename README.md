@@ -62,32 +62,7 @@ their culinary creations and explore new dishes to enhance personal collection.
    ```bash
    http://localhost:3000
 
-## Test cases
-1. Authentication
-   To register, submit the form with the name, email, and password.
-   When you click on "register", if the account already exists, it will say "email taken", and if not,
-   you will see "User registered successfully", and after that you will be redirected to the front page.
 
-   To login, you should submit the correst email and password.
-   When you click on "sign in" button, if the email or the password is wrong, you will receive an error
-   saying "invalid email or password", and if it is correct, you will see "welcome" and the user's name,
-   and you will be redirected to dashboard.
-
-   To logout, you can just simply click on "logout" on dashboard and you will be logged out, but your email still exists
-   in the website.
-
-   To delete your account, click on "delete account" button on dashboard, you will get a notification that says
-   "are you sure? this cannot be undone", to confirm click "ok" and your account will be deleted along with the
-   recipes that the user have uploadded. You can make sure by signing in and you will receive an error that says
-   "invalid email or password".
-
-3. Add and view recipes
-   To add a recipe, click on "add recipe" button, and fill the form which is title, description, ingredients,
-   description, and images which you can add between 1 and 10 images. any missing field will result with an
-   error that says "please fill out this field".
-   After filling all the fields and click on submit, you will be redirected to the "ecipes" where you will see your recipe
-   along with other recipes that you can view indiviually by clicking on "view recipe" button which will redirect you to
-   the recipe that will show you the ingredients and the instructions of how to make the dish.
 
 
 
