@@ -1,3 +1,6 @@
 db.js
 .env
 uploads/
+images/
+node_modules/
+Screencast.mp4

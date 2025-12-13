@@ -204,22 +204,21 @@ header {
 }
 
 .dashboard-body {
-    background: #fff;
-    padding: 25px 15px;
-    border-radius: 12px;
     text-align: center;
+    padding: 50px 20px;
+    background: linear-gradient(135deg, #ffcc00, #ff9966);
+    border-radius: 10px;
     margin: 20px;
+    padding: 0 20px;
 }
 
 .dashboard-body h2 {
-    color: #4CAF50;
     font-size: 2em;
     margin-bottom: 15px;
 }
 
 .dashboard-body h3 {
     font-size: 1.2em;
-    color: #666;
 }
 /*add recipe*/
 
@@ -286,12 +285,7 @@ header {
     color: #333;
 }
 
-/*mobile*/
-@media (max-width: 600px) {
-    #recipe-form {
-        padding: 15px;
-    }
-}
+
 /*edit*/
 .edit {
     max-width: 750px;
@@ -511,7 +505,7 @@ header {
 
 @keyframes viewFadeIn {
     from{opacity: 0; transform: translateY(15px);}
-    tp {opacity: 1; transform: translateY(0);}
+    to {opacity: 1; transform: translateY(0);}
 }
 
 @media (max-width: 600px) {
@@ -525,5 +519,11 @@ header {
 
     .view-recipe-wrapper h3 {
         font-size: 1.2rem;
+    }
+}
+/*mobile*/
+@media (max-width: 600px) {
+    #recipe-form {
+        padding: 15px;
     }
 }
